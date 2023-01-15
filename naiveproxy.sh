@@ -1,6 +1,6 @@
 #!/bin/bash
 naygV="22.11.20 V 2.0"
-remoteV=`wget -qO- https://gitlab.com/rwkgyg/naiveproxy-yg/raw/main/naiveproxy.sh | sed  -n 2p | cut -d '"' -f 2`
+remoteV=`wget -qO- https://raw.githubusercontent.com/fy-deng/naiveproxy-2/main/naiveproxy.sh && bash naiveproxy.sh | sed  -n 2p | cut -d '"' -f 2`
 chmod +x /root/naiveproxy.sh
 red='\033[0;31m'
 yellow='\033[0;33m'
@@ -147,14 +147,14 @@ mv caddy /usr/bin/
 }
 
 inscaddynaive(){
-naygvsion=`curl -s "https://gitlab.com/rwkgyg/naiveproxy-yg/raw/main/version"`
+naygvsion=`curl -s "https://raw.githubusercontent.com/fy-deng/naiveproxy-2/main/version"`
 green "请选择安装或者更新 naiveproxy 内核方式:"
 readp "1. 使用已编译好的 caddy2-naiveproxy 版本，当前已编译到最新版本号： $naygvsion （快速安装，小白推荐，回车默认）\n2. 自动编译最新 caddy2-naiveproxy 版本，当前官方最新版本号： $lastvsion （存在编译失败可能）\n请选择：" chcaddynaive
 if [ -z "$chcaddynaive" ] || [ $chcaddynaive == "1" ]; then
 insupdate
 cd /root
-wget -N --no-check-certificate https://gitlab.com/rwkgyg/naiveproxy-yg/raw/main/caddy2-naive-linux-${cpu}.tar.gz
-wget -qN --no-check-certificate https://gitlab.com/rwkgyg/naiveproxy-yg/raw/main/version
+wget -N --no-check-certificate https://raw.githubusercontent.com/fy-deng/naiveproxy-2/main/caddy2-naive-linux-${cpu}.tar.gz
+wget -qN --no-check-certificate https://raw.githubusercontent.com/fy-deng/naiveproxy-2/main/version
 tar zxvf caddy2-naive-linux-${cpu}.tar.gz
 rm caddy2-naive-linux-${cpu}.tar.gz -f
 cd
@@ -502,7 +502,7 @@ upnayg(){
 if [[ -z $(systemctl status caddy 2>/dev/null | grep -w active) && ! -f '/etc/caddy/Caddyfile' ]]; then
 red "未正常安装naiveproxy" && exit
 fi
-wget -N https://gitlab.com/rwkgyg/naiveproxy-yg/raw/main/naiveproxy.sh
+wget -N https://raw.githubusercontent.com/fy-deng/naiveproxy-2/main/naiveproxy.sh && bash naiveproxy.sh
 chmod +x /root/naiveproxy.sh 
 ln -sf /root/naiveproxy.sh /usr/bin/na
 green "naiveproxy-yg安装脚本升级成功" && na
@@ -595,9 +595,9 @@ echo -e "${bblue}     ░██        ░${plain}██    ░██ ██    
 echo -e "${bblue}     ░██ ${plain}        ░██    ░░██        ░██ ░██       ░${red}██ ░██       ░██ ░██ ${plain}  "
 echo -e "${bblue}     ░█${plain}█          ░██ ██ ██         ░██  ░░${red}██     ░██  ░░██     ░██  ░░██ ${plain}  "
 green "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" 
-white "甬哥Gitlab项目  ：gitlab.com/rwkgyg"
-white "甬哥blogger博客 ：ygkkk.blogspot.com"
-white "甬哥YouTube频道 ：www.youtube.com/c/甬哥侃侃侃kkkyg"
+#white "甬哥Gitlab项目  ：gitlab.com/rwkgyg"
+#white "甬哥blogger博客 ：ygkkk.blogspot.com"
+#white "甬哥YouTube频道 ：www.youtube.com/c/甬哥侃侃侃kkkyg"
 green "naiveproxy-yg脚本安装成功后，再次进入脚本的快捷方式为 na"
 red "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 green "  1. 安装naiveproxy（必选）" 
