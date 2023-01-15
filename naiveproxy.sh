@@ -193,37 +193,37 @@ version
 
 inscertificate(){
 green "naiveproxy协议证书申请方式选择如下:"
-readp "1. acme一键申请证书脚本（支持常规80端口模式与dns api模式），已用此脚本申请的证书则自动识别（回车默认）\n2. 自定义证书路径（非/root/ygkkkca路径）\n请选择：" certificate
+readp "1. acme一键申请证书脚本（支持常规80端口模式与dns api模式），已用此脚本申请的证书则自动识别（回车默认）\n2. 自定义证书路径（非/etc/ssl/private路径）\n请选择：" certificate
 if [ -z "${certificate}" ] || [ $certificate == "1" ]; then
-if [[ -f /root/ygkkkca/cert.crt && -f /root/ygkkkca/private.key ]] && [[ -s /root/ygkkkca/cert.crt && -s /root/ygkkkca/private.key ]] && [[ -f /root/ygkkkca/ca.log ]]; then
+if [[ -f /etc/ssl/private/cert.crt && -f /etc/ssl/private/private.key ]] && [[ -s /etc/ssl/private/cert.crt && -s /etc/ssl/private/private.key ]] && [[ -f /etc/ssl/private/ca.log ]]; then
 blue "经检测，之前已使用此acme脚本申请过证书"
 readp "1. 直接使用原来的证书（回车默认）\n2. 删除原来的证书，重新申请证书\n请选择：" certacme
 if [ -z "${certacme}" ] || [ $certacme == "1" ]; then
-ym=$(cat /root/ygkkkca/ca.log)
+ym=$(cat /etc/ssl/private/ca.log)
 blue "检测到的域名：$ym ，已直接引用\n"
 elif [ $certacme == "2" ]; then
 curl https://get.acme.sh | sh
 bash /root/.acme.sh/acme.sh --uninstall
-rm -rf /root/ygkkkca
+rm -rf /etc/ssl/private
 rm -rf ~/.acme.sh acme.sh
 sed -i '/--cron/d' /etc/crontab
 [[ -z $(/root/.acme.sh/acme.sh -v 2>/dev/null) ]] && green "acme.sh卸载完毕" || red "acme.sh卸载失败"
 sleep 2
 wget -N https://gitlab.com/rwkgyg/acme-script/raw/main/acme.sh && bash acme.sh
-ym=$(cat /root/ygkkkca/ca.log)
-if [[ ! -f /root/ygkkkca/cert.crt && ! -f /root/ygkkkca/private.key ]] && [[ ! -s /root/ygkkkca/cert.crt && ! -s /root/ygkkkca/private.key ]]; then
+ym=$(cat /etc/ssl/private/ca.log)
+if [[ ! -f /etc/ssl/private/cert.crt && ! -f /etc/ssl/private/private.key ]] && [[ ! -s /etc/ssl/private/cert.crt && ! -s /etc/ssl/private/private.key ]]; then
 red "证书申请失败，脚本退出" && exit
 fi
 fi
 else
 wget -N https://gitlab.com/rwkgyg/acme-script/raw/main/acme.sh && bash acme.sh
-ym=$(cat /root/ygkkkca/ca.log)
-if [[ ! -f /root/ygkkkca/cert.crt && ! -f /root/ygkkkca/private.key ]] && [[ ! -s /root/ygkkkca/cert.crt && ! -s /root/ygkkkca/private.key ]]; then
+ym=$(cat /etc/ssl/private/ca.log)
+if [[ ! -f /etc/ssl/private/cert.crt && ! -f /etc/ssl/private/private.key ]] && [[ ! -s /etc/ssl/private/cert.crt && ! -s /etc/ssl/private/private.key ]]; then
 red "证书申请失败，脚本退出" && exit
 fi
 fi
-certificatec='/root/ygkkkca/cert.crt'
-certificatep='/root/ygkkkca/private.key'
+certificatec='/etc/ssl/private/cert.crt'
+certificatep='/etc/ssl/private/private.key'
 elif [ $certificate == "2" ]; then
 readp "请输入已放置好的公钥文件crt的路径（/a/b/……/cert.crt）：" cerroad
 blue "公钥文件crt的路径：$cerroad "
@@ -283,9 +283,9 @@ blue "已确认密码：${pswd}\n"
 }
 
 insweb(){
-readp "设置naiveproxy伪装网址，注意：不要带https（不懂的话，直接回车跳过，默认为 甬哥博客地址：ygkkk.blogspot.com ）：" web
+readp "设置naiveproxy伪装网址，注意：不要带https（不懂的话，直接回车跳过，默认为 www.nextcloud.com ）：" web
 if [[ -z ${web} ]]; then
-naweb=ygkkk.blogspot.com
+naweb=www.nextcloud.com
 else
 naweb=$web
 fi
@@ -574,7 +574,7 @@ else
 red "naiveproxy服务启动失败，请运行systemctl status caddy查看服务状态并反馈，脚本退出" && exit
 fi
 red "======================================================================================"
-url="naive+https://${user}:${pswd}@${ym}:$port?padding=true#Naive-ygkkk"
+url="naive+https://${user}:${pswd}@${ym}:$port?padding=true#Naive-1"
 echo ${url} > /root/naive/URL.txt
 green "\nnaiveproxy代理服务安装完成，生成脚本的快捷方式为 na" && sleep 3
 blue "\nv2rayn客户端配置文件v2rayn.json保存到 /root/naive/v2rayn.json\n"
